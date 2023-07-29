@@ -25,17 +25,20 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.get("/api/:date?", (req, res) => {
-  const dateString = req.params['date'];
+  let dateString = req.params['date'];
 
-  let dateValidObject, unixTimestamp;
-
-  if (isNaN(Number(dateString))) {
-    dateValidObject = new Date(dateString);
-    unixTimestamp = Math.floor(dateValidObject.getTime());
-  } else {
-    unixTimestamp = Number(dateString);    
-    dateValidObject = new Date(unixTimestamp);
+  if (!dateString) {
+    dateString = new Date().toUTCString();
   }
+  dateString = Number(dateString) ? Number(dateString) : dateString;
+
+  const dateValidObject = new Date(dateString);
+
+   if (isNaN(dateValidObject.getTime())) {
+    return res.json({ error: "Invalid Date" });    
+  }
+  
+  const unixTimestamp = Math.floor(dateValidObject.getTime());   
   
   const utcDate = dateValidObject.toUTCString()
     
