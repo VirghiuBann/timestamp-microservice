@@ -24,12 +24,20 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+app.get("/api/", (req, res) => {
+  const currentDate = new Date().toLocaleString();
+  const unix = Date.parse(currentDate);
+  console.log("empty", currentDate, unix);
+     
+  res.json({
+    unix: unix,
+    utc: currentDate
+  });
+})
+
 app.get("/api/:date?", (req, res) => {
   let dateString = req.params['date'];
 
-  if (!dateString) {
-    dateString = new Date().toUTCString();
-  }
   dateString = Number(dateString) ? Number(dateString) : dateString;
 
   const dateValidObject = new Date(dateString);
@@ -38,15 +46,16 @@ app.get("/api/:date?", (req, res) => {
     return res.json({ error: "Invalid Date" });    
   }
   
-  const unixTimestamp = Math.floor(dateValidObject.getTime());   
+  const unix = dateValidObject.getTime();   
   
-  const utcDate = dateValidObject.toUTCString()
+  const utc = dateValidObject.toUTCString()
+
+  console.log(utc, unix);
     
   res.json({
-    unix: unixTimestamp,
-    utc: utcDate
+    unix: unix,
+    utc: utc
   });
-
 })
 
 
