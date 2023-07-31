@@ -25,8 +25,8 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.get("/api/", (req, res) => {
-  const currentDate = new Date().toLocaleString();
-  const unix = Date.parse(currentDate);
+  const unix = Date.now();
+  const currentDate = new Date(unix).toUTCString();
   console.log("empty", currentDate, unix);
      
   res.json({
