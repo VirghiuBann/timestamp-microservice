@@ -25,13 +25,14 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.get("/api/", (req, res) => {
-  const unix = Date.now();
-  const currentDate = new Date(unix).toUTCString();
-  console.log("empty", currentDate, unix);
+  const date = new Date();
+  const unix = date.getTime();
+  const utc = date.toUTCString();
+  console.log("empty", unix, utc);
      
   res.json({
     unix: unix,
-    utc: currentDate
+    utc: utc
   });
 })
 
